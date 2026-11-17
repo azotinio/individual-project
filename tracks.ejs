@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+<%- include('partials/profileHead') %>
+<%- include('partials/rangePicker', { basePath: '/user/' + encodeURIComponent(username) + '/tracks' }) %>
+
+<% if (!stats) { %>
+  <div class="empty">
+    <h2>No top tracks for this period</h2>
+    <p>ListenBrainz has no track stats for <strong><%= username %></strong> in this time range. That happens when the profile has no listens in the period, or when stats have not been calculated yet.</p>
+    <p>
+      <% if (range !== 'all_time') { %><a href="/user/<%= encodeURIComponent(username) %>/tracks?range=all_time">Try all time</a> or <% } %>
+      <a href="/user/<%= encodeURIComponent(username) %>/recent">check recent listens</a>.
+    </p>
+  </div>
+<% } else { %>
+  <p class="summary">
+    Showing the top <%= stats.tracks.length %> of <%= formatNumber(stats.totalTracks) %> tracks.
+    Together they account for <%= formatNumber(stats.totalListens) %> listens.
+  </p>
+
+  <ol class="tracks">
+    <% stats.tracks.forEach((t, i) => { %>
+      <li class="track-row">
+        <span class="rank"><%= i + 1 %></span>
+        <div class="track-main">
+          <span class="track-title"><%= t.title %></span>
+          <span class="track-meta">
+            <%= t.artist %><% if (t.release) { %>, from <em><%= t.release %></em><% } %>
+          </span>
+        </div>
+        <span class="count"><%= formatNumber(t.listens) %> <%= t.listens === 1 ? 'listen' : 'listens' %></span>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+
+<%- include('partials/footer') %>

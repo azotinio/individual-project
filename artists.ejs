@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+<%- include('partials/profileHead') %>
+<%- include('partials/rangePicker', { basePath: '/user/' + encodeURIComponent(username) }) %>
+
+<% if (!stats) { %>
+  <div class="empty">
+    <h2>No top artists for this period</h2>
+    <p>ListenBrainz has no artist stats for <strong><%= username %></strong> in this time range. That happens when the profile has no listens in the period, or when stats have not been calculated yet.</p>
+    <p>
+      <% if (range !== 'all_time') { %><a href="/user/<%= encodeURIComponent(username) %>?range=all_time">Try all time</a> or <% } %>
+      <a href="/user/<%= encodeURIComponent(username) %>/recent">check recent listens</a>.
+    </p>
+  </div>
+<% } else { %>
+  <p class="summary">
+    Showing the top <%= stats.artists.length %> of <%= formatNumber(stats.totalArtists) %> artists.
+    Together they account for <%= formatNumber(stats.totalListens) %> listens.
+  </p>
+
+  <ol class="bars">
+    <% stats.artists.forEach((a, i) => { %>
+      <li class="bar-row">
+        <span class="rank"><%= i + 1 %></span>
+        <div class="bar-body">
+          <div class="bar-head">
+            <% if (a.mbid) { %>
+              <a class="name" href="https://musicbrainz.org/artist/<%= encodeURIComponent(a.mbid) %>" target="_blank" rel="noopener"><%= a.name %></a>
+            <% } else { %>
+              <span class="name"><%= a.name %></span>
+            <% } %>
+            <span class="count"><%= formatNumber(a.listens) %> <%= a.listens === 1 ? 'listen' : 'listens' %></span>
+          </div>
+          <div class="bar-track" aria-hidden="true"><span style="width: <%= a.percent %>%"></span></div>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+<% } %>
+
+<%- include('partials/footer') %>

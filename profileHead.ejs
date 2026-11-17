@@ -1,0 +1,10 @@
+<%# Needs: username, range, active %>
+<div class="profile-head">
+  <h1><%= username %></h1>
+  <p class="sub">Public ListenBrainz profile. <a href="https://listenbrainz.org/user/<%= encodeURIComponent(username) %>/" target="_blank" rel="noopener">Open on listenbrainz.org</a></p>
+</div>
+<nav class="tabs" aria-label="Profile sections">
+  <a href="/user/<%= encodeURIComponent(username) %>?range=<%= range %>"<% if (active === 'artists') { %> aria-current="page"<% } %>>Top artists</a>
+  <a href="/user/<%= encodeURIComponent(username) %>/tracks?range=<%= range %>"<% if (active === 'tracks') { %> aria-current="page"<% } %>>Top tracks</a>
+  <a href="/user/<%= encodeURIComponent(username) %>/recent"<% if (active === 'recent') { %> aria-current="page"<% } %>>Recent listens</a>
+</nav>

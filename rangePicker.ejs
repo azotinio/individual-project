@@ -1,0 +1,6 @@
+<%# Needs: ranges, range, basePath %>
+<div class="range-picker" role="group" aria-label="Time range">
+  <% ranges.forEach((r) => { %>
+    <a href="<%= basePath %>?range=<%= r.value %>"<% if (r.value === range) { %> aria-current="true"<% } %>><%= r.label %></a>
+  <% }) %>
+</div>

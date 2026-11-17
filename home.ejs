@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<section class="intro">
+  <h1>See what anyone is listening to</h1>
+  <p>Look up a public ListenBrainz profile to get their top artists, top tracks and latest plays.</p>
+</section>
+
+<form class="search" action="/search" method="POST" novalidate>
+  <% if (error) { %>
+    <p class="alert" role="alert"><%= error %></p>
+  <% } %>
+
+  <label for="username">ListenBrainz username</label>
+  <input
+    id="username" name="username" type="text"
+    value="<%= values.username %>" placeholder="e.g. rob"
+    maxlength="64" required autocomplete="off" autocapitalize="none" spellcheck="false"
+    aria-describedby="username-hint"<% if (error) { %> aria-invalid="true"<% } %>>
+  <p id="username-hint" class="hint">Use the name from listenbrainz.org. A Spotify username will not work here.</p>
+
+  <label for="range">Time range for top lists</label>
+  <select id="range" name="range">
+    <% ranges.forEach((r) => { %>
+      <option value="<%= r.value %>"<% if (values.range === r.value) { %> selected<% } %>><%= r.label %></option>
+    <% }) %>
+  </select>
+
+  <button type="submit">Look up listener</button>
+</form>
+
+<section class="examples" aria-label="Example profiles">
+  <p>No username handy? Try one of these:</p>
+  <% examples.forEach((name) => { %>
+    <a class="chip" href="/user/<%= encodeURIComponent(name) %>"><%= name %></a>
+  <% }) %>
+</section>
+
+<%- include('partials/footer') %>

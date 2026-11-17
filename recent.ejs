@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<%- include('partials/profileHead') %>
+
+<% if (days.length === 0) { %>
+  <div class="empty">
+    <h2>No listens yet</h2>
+    <p><strong><%= username %></strong> has not submitted any listens, or their history is private. Once they scrobble something it will show up here.</p>
+    <p><a href="/">Search for another user</a></p>
+  </div>
+<% } else { %>
+  <p class="summary">The latest <%= total %> listens, newest first.</p>
+
+  <% days.forEach((day) => { %>
+    <section class="day">
+      <h2><%= day.label %></h2>
+      <ul class="listens">
+        <% day.items.forEach((l) => { %>
+          <li class="listen-row">
+            <time class="listen-time" datetime="<%= l.listenedAt.toISOString() %>"><%= l.time %></time>
+            <div class="track-main">
+              <span class="track-title"><%= l.title %></span>
+              <span class="track-meta">
+                <%= l.artist %><% if (l.release) { %>, from <em><%= l.release %></em><% } %>
+              </span>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+  <% }) %>
+<% } %>
+
+<%- include('partials/footer') %>
